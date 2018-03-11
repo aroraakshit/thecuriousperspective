@@ -6,6 +6,30 @@ fiction:
   name: fiction
   description: False
   cover: False
+quotes:
+  name: quotes
+  description: False
+  cover: False
+travel:
+  name: travel
+  description: False
+  cover: False
+family:
+  name: family
+  description: False
+  cover: False
+motivation:
+  name: motivation
+  description: False
+  cover: False
+in-progress:
+  name: in progress
+  description: False
+  cover: False
+published:
+  name: published
+  description: False
+  cover: False
 fables:
   name: fables
   description: A series of short stories that make you think.
