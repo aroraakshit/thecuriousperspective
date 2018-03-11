@@ -2,7 +2,7 @@
 markdown: kramdown
 highlighter: rouge
 paginate: 100 # it will paginate after this number
-language: 'en-uk'
+language: 'en-us'
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /jasper2/
@@ -27,7 +27,7 @@ facebook: AkshitArora1995 # replace by your username
 
 # Disqus
 disqus: True
-disqus_shortname: akshitarora # replace with your disqus username
+disqus_shortname: ghost-deployed-on-github # replace with your disqus username
 
 # Google Analytics
 google_analytics: UA-109066326-2 # replace with your GA tracking identifier
@@ -75,13 +75,19 @@ production_url: https://aroraakshit.github.io/jasper2/
 source_url: https://github.com/aroraakshit/jasper2/
 
 exclude:
-  - README.md
-  - Rakefile
-  - Gemfile
-  - Gemfile.lock
-  - changelog.md
-  - "*.Rmd"
+  - assets/css
+  - node_modules
   - vendor
   - .travis.yml
-  - node_modules
-  - .git
+  - Gemfile
+  - Gemfile.lock
+  - GHOST.txt
+  - gulpfile.js
+  - LICENSE
+  - package.json
+  - Rakefile
+  - README.md
+  - script.py
+  - changelog.md
+  - "*.Rmd"
+  - .git*
