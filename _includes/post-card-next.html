@@ -1,3 +1,4 @@
+{% assign words_per_minute = site.words_per_minute | default: 200 %}
 
     <article class="post-card {{ page.next.class }}{% unless page.next.cover %} no-image{% endunless %}">
         {% if page.next.cover %}
@@ -21,7 +22,11 @@
                     <h2 class="post-card-title">{{ page.next.title }}</h2>
                 </header>
                 <section class="post-card-excerpt">
-                    <p>{{ page.next.content | strip_html | truncatewords: 33, "" }}</p>
+                    {% if page.next.excerpt %}
+                        <p>{{ page.next.excerpt | strip_html | truncatewords: 33, "" }}</p>
+                    {% else %}
+                        <p>{{ page.next.content | strip_html | truncatewords: 33, "" }}</p>
+                    {% endif %}
                 </section>
             </a>
             <footer class="post-card-meta">
@@ -35,6 +40,14 @@
                         </span>
                     {% endif %}
                 {% endfor %}
+                <span class="reading-time">
+                    {% assign words = page.next.content | strip_html | number_of_words %}
+                    {% if words <= words_per_minute %}
+                      1 min read
+                    {% else %}
+                      {{ words | divided_by:words_per_minute }} min read
+                    {% endif %}
+                </span>
             </footer>
         </div>
     </article>
