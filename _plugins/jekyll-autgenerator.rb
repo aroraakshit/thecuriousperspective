@@ -51,4 +51,19 @@ module Jekyll
       self.data[type] = val
     end
   end
+
+  class AtomPageAuthor < Page
+    def initialize(site, base, dir, type, val, posts)
+      @site = site
+      @base = base
+      @dir = dir
+      @name = 'feed.xml'
+
+      self.process(@name)
+      self.read_yaml(File.join(base, '_layouts'), "feed.xml")
+      self.data[type] = val
+      self.data["grouptype"] = type
+      self.data["posts"] = posts[0..9]
+    end
+  end
 end

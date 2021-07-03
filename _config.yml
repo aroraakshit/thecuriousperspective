@@ -2,7 +2,8 @@
 markdown: kramdown
 highlighter: rouge
 paginate: 100 # it will paginate after this number
-language: 'en-us'
+language: 'en-uk'
+words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /jasper2/
@@ -14,8 +15,7 @@ cover: assets/images/blog-cover.jpg
 logo: assets/images/blog-icon.png
 logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
-production_url: https://aroraakshit.github.io/jasper2/
-source_url: https://github.com/aroraakshit/jasper2/
+CNAME: #add cname for website to be created
 
 # Social info
 navigation: True # show the navbar links
@@ -41,6 +41,7 @@ permalink: /:title
 # Tags' info in `_data/tags_info.yml`
 
 # gems and other configs
+plugins_dir: [_plugins]
 plugins: [jekyll-paginate, jekyll-feed]
 
 feed:
@@ -54,7 +55,7 @@ feed:
 # Disqus comments as a per-post basis
 # ...
 
-# Settings for builing master branch with travis-ci
+# Settings for building master branch with travis-ci
 # with jekyll-travis
 
 # Settings for deploy rake task
@@ -85,6 +86,7 @@ exclude:
   - gulpfile.js
   - LICENSE
   - package.json
+  - package-lock.json
   - Rakefile
   - README.md
   - script.py
