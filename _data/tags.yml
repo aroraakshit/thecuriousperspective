@@ -1,40 +1,46 @@
-speeches:
-  name: speeches
-  description: Some of the greatest words ever spoken.
-  cover: assets/images/speeches.jpg
-fiction:
-  name: fiction
-  description: False
-  cover: False
-quotes:
-  name: quotes
-  description: False
-  cover: False
-travel:
-  name: travel
-  description: False
-  cover: False
-family:
-  name: family
-  description: False
-  cover: False
-motivation:
-  name: motivation
-  description: False
-  cover: False
-in-progress:
-  name: in progress
-  description: False
-  cover: False
-published:
-  name: published
-  description: False
-  cover: False
-fables:
-  name: fables
-  description: A series of short stories that make you think.
-  cover: assets/images/fables.jpg
-getting-started:
-  name: getting-started
-  description: False
-  cover: False
+dl:
+  name: dl
+  description: Posts related to applied AI (Machine Learning / Deep Learning) research in the domains of Conversational AI, Education and Creativity
+  cover: assets/images/dl.jpg
+  # Image Credits: OpenAI (https://deepmind.com/blog/article/differentiable-neural-computers) - An artist's impression of a DNC. The glowing controller network is visualised as the operator of a factory where information is delivered in the form of zeros and ones, manipulated by three robotic arms reading, writing and erasing on a scroll that represents the memory, and finally exported as a newly minted binary sequence.
+
+# speeches:
+#   name: speeches
+#   description: Some of the greatest words ever spoken.
+#   cover: assets/images/speeches.jpg
+# fiction:
+#   name: fiction
+#   description: False
+#   cover: False
+# quotes:
+#   name: quotes
+#   description: False
+#   cover: False
+# travel:
+#   name: travel
+#   description: False
+#   cover: False
+# family:
+#   name: family
+#   description: False
+#   cover: False
+# motivation:
+#   name: motivation
+#   description: False
+#   cover: False
+# in-progress:
+#   name: in progress
+#   description: False
+#   cover: False
+# published:
+#   name: published
+#   description: False
+#   cover: False
+# fables:
+#   name: fables
+#   description: A series of short stories that make you think.
+#   cover: assets/images/fables.jpg
+# getting-started:
+#   name: getting-started
+#   description: False
+#   cover: False
