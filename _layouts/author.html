@@ -26,6 +26,9 @@ logo: 'assets/images/ghost.png'
                 {% if author[1].bio %}
                     <h2 class="author-bio">{{ author[1].bio }}</h2>
                 {% endif %}
+                {% if author[1].description %}
+                    <h3 class="author-bio">{{ author[1].description }}</h2>
+                {% endif %}
                 <div class="author-meta">
                     {% if author[1].location %}
                         <div class="author-location">{{ author[1].location }} <span class="bull">&bull;</span></div>
