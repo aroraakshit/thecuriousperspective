@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary       = "This is a full-featured port of Ghost's default theme Casper v2 for Jekyll"
 
   s.files         = `git ls-files -z`.split("\x0").select do |f|
-    f.match(%r{^(assets|_(includes|layouts|data|plugins|posts|posts_old)/|(LICENSE|README)((\.(txt|md)|$)))}i)
+    f.match(%r{^(assets|_(includes|layouts|data|plugins|posts)/|(LICENSE|README)((\.(txt|md)|$)))}i)
   end
 
   s.platform      = Gem::Platform::RUBY

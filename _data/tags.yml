@@ -1,6 +1,6 @@
 dl:
   name: dl
-  description: Posts related to applied AI (Machine Learning / Deep Learning) research in the domains of Conversational AI, Education and Creativity
+  description: Posts related to applied AI (Machine Learning / Deep Learning) research in the domains of Conversational AI, Education and Creativity.
   cover: assets/images/dl.jpg
   # Image Credits: OpenAI (https://deepmind.com/blog/article/differentiable-neural-computers) - An artist's impression of a DNC. The glowing controller network is visualised as the operator of a factory where information is delivered in the form of zeros and ones, manipulated by three robotic arms reading, writing and erasing on a scroll that represents the memory, and finally exported as a newly minted binary sequence.
 
