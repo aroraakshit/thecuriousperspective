@@ -7,7 +7,6 @@ music:
   name: music
   description: Journals related to Music Theory, Song Lyrics & Meanings, Piano and Audio Engineering
   cover: assets/images/music.jpg
-
 books:
   name: books
   description: Journals related to my notes on some of my favorite books
