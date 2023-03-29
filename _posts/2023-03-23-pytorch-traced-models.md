@@ -455,6 +455,7 @@ This is the workflow that a developer can use to optimize a given custom model. 
 2. NGC [PyTorch docker image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags)
 3. Blogs about PyTorch tracing vs scripting
     - [blog](https://ppwwyyxx.com/blog/2022/TorchScript-Tracing-vs-Scripting/) by Yuxin Wu - Software Engineer at Google Brain, May 2022.
+        - Proposes the use of tracing over scripting because complying with scripting requirements is harder and makes the code uglier, in comparison to tracing. I highly recommend going through this blog in detail to understand the comparison between tracing and scripting. The blog ultimately proposes cleverly mixing tracing (by default) and scripting (when required for submodules) for the most optimal export. 
     - [Mastering TorchScript](https://paulbridger.com/posts/mastering-torchscript/) by Paul Bridger - ML Consultant, October 2020.
 4. Misc
     - [Adding support for HTML5's details element to Jekyll](http://movb.de/jekyll-details-support.html)
