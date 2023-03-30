@@ -94,6 +94,7 @@ To go from eager to script, we can use:
 
 ### Tracing
 - Takes an existing eager model with the provided example input. Tracer runs the function, recording the tensor ops performed. We turn the recording into a torchscript module.
+- When using `torch.jit.trace` you’ll provide your model and sample input as arguments. The input will be fed through the model as in regular inference and the executed operations will be traced and recorded into TorchScript. Logical structure will be frozen into the path taken during this sample execution. -- Paul's blog
 - PRO: can reuse existing eager model code
 - CON: control-flow and data structures are ignored.
 
@@ -291,6 +292,8 @@ graph(%x : Float(3, strides=[1], requires_grad=0, device=cpu),
 
 ![figure:1](assets/images/2023-03-23-pytorch-traced-models/scripting-1.png)
 
+- When using `torch.jit.script` you’ll simply provide your model as an argument. TorchScript will be generated from the static inspection of the nn.Module contents (recursively). -- Paul's blog
+
 However with tracing, we do not preserve control flow or other language features like data structures, those will all be erased, and only tensor ops will remain. 
 
 So we have script compiler for that - which says that we write the model directly in TorchScript, a high performance subset of Python (this subset is getting more and more rich and expansive with time). 
@@ -400,6 +403,8 @@ graph(%self : __torch__.RNN,
 
 Per PyTorch docs:
 > We provide tools to incrementally transition a model from a pure Python program to a TorchScript program that can be run independently from Python, such as in a standalone C++ program. This makes it possible to train models in PyTorch using familiar tools in Python and then export the model via TorchScript to a production environment where Python programs may be disadvantageous for performance and multi-threading reasons.
+Per Paul's blog (linked in references):
+> TorchScript is one of the most important parts of the Pytorch ecosystem, allowing portable, efficient and nearly seamless deployment. With just a few lines of torch.jit code and some simple model changes you can export an asset that runs anywhere libtorch does. It’s an important toolset to master if you want to run your models outside the lab at high efficiency.
 
 How do we use the structure obtained by tracing/scrpting, towards production? - TorchScript models can be saved like a model archive and loaded to run in PyTorch's just-in-time compiler, instead of the CPython interpreter. 
 
@@ -456,7 +461,9 @@ This is the workflow that a developer can use to optimize a given custom model. 
 3. Blogs about PyTorch tracing vs scripting
     - [blog](https://ppwwyyxx.com/blog/2022/TorchScript-Tracing-vs-Scripting/) by Yuxin Wu - Software Engineer at Google Brain, May 2022.
         - Proposes the use of tracing over scripting because complying with scripting requirements is harder and makes the code uglier, in comparison to tracing. I highly recommend going through this blog in detail to understand the comparison between tracing and scripting. The blog ultimately proposes cleverly mixing tracing (by default) and scripting (when required for submodules) for the most optimal export. 
-    - [Mastering TorchScript](https://paulbridger.com/posts/mastering-torchscript/) by Paul Bridger - ML Consultant, October 2020.
+    - Paul Bridger - ML Consultant
+        - [Mastering TorchScript](https://paulbridger.com/posts/mastering-torchscript/), October 2020. This blog demonstrates the differences between tracing and scripting via different examples. 
+        - [Object Detection at 1840 FPS with TorchScript, TensorRT and DeepStream](https://paulbridger.com/posts/video-analytics-deepstream-pipeline/#stage-3-hacked-deepstream-mdash-80-tensorrt-20-torchscript), October 2020. This blog talks compares TorchScript vs TensorRT.
 4. Misc
     - [Adding support for HTML5's details element to Jekyll](http://movb.de/jekyll-details-support.html)
     - [Netron.app](https://netron.app/) can be used to visualize any model file (extension .onnx, .pt)
