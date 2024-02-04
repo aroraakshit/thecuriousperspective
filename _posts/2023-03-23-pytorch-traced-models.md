@@ -11,7 +11,11 @@ subclass: 'post'
 author: aroraakshit
 ---
 
-Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models. To setup dev environment to test code in this notebook:
+# PyTorch traced models
+### - Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models. 
+
+To setup dev environment to test code in this notebook:
+
 ```bash
 # launch the docker container with latest NGC pytorch image available here: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags 
 docker run --gpus=2 --rm -d -it -p 8888:8888 -p 6006:6006 -v /home/akshita/github/:/github --ipc=host nvcr.io/nvidia/pytorch:23.02-py3
