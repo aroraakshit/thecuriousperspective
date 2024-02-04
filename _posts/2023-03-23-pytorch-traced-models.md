@@ -5,7 +5,7 @@ cover: 'assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png'
 navigation: true
 title: 'PyTorch traced models'
 date: 2023-03-23 12:0:0
-tags: DL FRAMEWORK
+tags: DL ENG
 class: post-template
 subclass: 'post'
 author: aroraakshit

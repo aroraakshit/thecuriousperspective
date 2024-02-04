@@ -5,7 +5,7 @@ cover: 'assets/images/2020-12-17-p1.jpeg'
 navigation: true
 title: 'How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory'
 date: 2020-12-17 12:0:0
-tags: DL FRAMEWORK ENG
+tags: DL ENG
 class: post-template
 subclass: 'post'
 author: aroraakshit
