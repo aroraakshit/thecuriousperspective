@@ -1,8 +1,12 @@
-dl:
-  name: dl
-  description: "Everything AI / Machine Learning / Deep Learning research & engineering"
+research:
+  name: research
+  description: "Everything AI / Machine Learning / Deep Learning research"
   cover: assets/images/dl.jpg
   # Image Credits: DeepMind (https://deepmind.com/blog/article/differentiable-neural-computers) - An artist's impression of a DNC. The glowing controller network is visualised as the operator of a factory where information is delivered in the form of zeros and ones, manipulated by three robotic arms reading, writing and erasing on a scroll that represents the memory, and finally exported as a newly minted binary sequence.
+eng:
+  name: eng
+  description: "Engineering the future"
+  cover: assets/images/dl.jpg
 # music:
 #   name: music
 #   description: "My journey of learning music"
