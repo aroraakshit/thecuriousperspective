@@ -6,7 +6,7 @@ language: 'en-uk'
 words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
-baseurl: /jasper2/
+baseurl: /thecuriousperspective/
 
 # Website info
 title: Akshit Arora
@@ -69,12 +69,12 @@ feed:
 safe: False
 lsi: False
 username: aroraakshit
-repo: jasper2
+repo: thecuriousperspective
 branch: master
-relative_source: ../jasper2/
-destination: ../jasper2-pages/
-production_url: https://aroraakshit.github.io/jasper2/
-source_url: https://github.com/aroraakshit/jasper2/
+relative_source: ../thecuriousperspective/
+destination: ../thecuriousperspective-pages/
+production_url: https://aroraakshit.github.io/thecuriousperspective/
+source_url: https://github.com/aroraakshit/thecuriousperspective/
 
 exclude:
   - assets/css
