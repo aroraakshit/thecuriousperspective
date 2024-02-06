@@ -1,4 +1,4 @@
-Source for [aroraakshit.github.io/jasper2](https://aroraakshit.github.io/jasper2/), based on [jekyllt/jasper2](https://github.com/jekyllt/jasper2).
+Source for [aroraakshit.github.io/thecuriousperspective](https://aroraakshit.github.io/thecuriousperspective/), based on [jekyllt/jasper2](https://github.com/jekyllt/jasper2).
 
 Pre-requisites:
 ```
