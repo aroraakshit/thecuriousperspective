@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title> - Articles</title>
+    <description>Journals</description>
+    <link>
+    https://aroraakshit.github.io</link>
+    
+      
+      <item>
+        <title>Accelerate your generative AI distributed training workloads with the NVIDIA NeMo Framework on Amazon EKS</title>
+        
+          <description>&lt;h1 id=&quot;accelerate-your-generative-ai-distributed-training-workloads-with-the-nvidia-nemo-framework-on-amazon-eks&quot;&gt;Accelerate your generative AI distributed training workloads with the NVIDIA NeMo Framework on Amazon EKS&lt;/h1&gt;
+&lt;h2 id=&quot;akshit-arora-nvidia-wenhan-tan-nvidia-eliuth-triana-nvidia-ankur-srivastava-aws&quot;&gt;Akshit Arora (NVIDIA), Wenhan Tan (NVIDIA), Eliuth Triana (NVIDIA), Ankur Srivastava (AWS)&lt;/h2&gt;
+
+</description>
+        
+        <pubDate>Tue, 16 Jul 2024 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/awsmlblogeks</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/awsmlblogeks</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Large scale training with NeMo Megatron on AWS ParallelCluster using P5 instances</title>
+        
+          <description>&lt;h1 id=&quot;large-scale-training-with-nemo-megatron-on-aws-parallelcluster-using-p5-instances&quot;&gt;Large scale training with NeMo Megatron on AWS ParallelCluster using P5 instances&lt;/h1&gt;
+&lt;h2 id=&quot;akshit-arora-nvidia-peter-dykas-nvidia-aman-shanbhag-aws-sean-smith-aws-pierre-yves-aws&quot;&gt;Akshit Arora (NVIDIA), Peter Dykas (NVIDIA), Aman Shanbhag (AWS), Sean Smith (AWS), Pierre-Yves (AWS)&lt;/h2&gt;
+
+</description>
+        
+        <pubDate>Wed, 29 May 2024 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/awshpcpcluster</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/awshpcpcluster</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>NVIDIA Speech and Translation AI Models Set Records for Speed and Accuracy</title>
+        
+          <description>&lt;h1 id=&quot;nvidia-speech-and-translation-ai-models-set-records-for-speed-and-accuracy&quot;&gt;NVIDIA Speech and Translation AI Models Set Records for Speed and Accuracy&lt;/h1&gt;
+&lt;h2 id=&quot;gordana-neskovic-somshubra-majumdar-nithin-rao-koluguri-akshit-arora-hainan-xu-and-elena-rastorgueva&quot;&gt;Gordana Neskovic, Somshubra Majumdar, Nithin Rao Koluguri, Akshit Arora, Hainan Xu and Elena Rastorgueva&lt;/h2&gt;
+
+</description>
+        
+        <pubDate>Tue, 19 Mar 2024 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/nv-set-records</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/nv-set-records</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>RADMMM: Multilingual Multiaccented Multispeaker TTS with RADTTS</title>
+        
+          <description>&lt;h1 id=&quot;radmmm-multilingual-multiaccented-multispeaker-tts-with-radtts&quot;&gt;RADMMM: Multilingual Multiaccented Multispeaker TTS with RADTTS&lt;/h1&gt;
+&lt;h2 id=&quot;rohan-badlani-rafael-valle-kevin-j-shih-joão-felipe-santos-siddharth-gururani-bryan-catanzaro-nvidia&quot;&gt;Rohan Badlani, Rafael Valle, Kevin J. Shih, João Felipe Santos, Siddharth Gururani, Bryan Catanzaro (NVIDIA)&lt;/h2&gt;
+
+</description>
+        
+        <pubDate>Sat, 03 Feb 2024 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/radmmm</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/radmmm</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Two Hearts United, Two Cultures Celebrated</title>
+        
+          <description>&lt;h1 id=&quot;two-hearts-united-two-cultures-celebrated&quot;&gt;Two Hearts United, Two Cultures Celebrated&lt;/h1&gt;
+&lt;h3 id=&quot;--celebrating-love-and-traditions-in-a-punjabi-tamil-wedding&quot;&gt;- Celebrating Love and Traditions in a Punjabi-Tamil Wedding&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Sun, 01 Oct 2023 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/twohearts</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/twohearts</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>How not to capture meteor showers!</title>
+        
+          <description>&lt;h1 id=&quot;how-not-to-capture-meteor-showers&quot;&gt;How not to capture meteor showers!&lt;/h1&gt;
+&lt;h3 id=&quot;--a-story-about-planning-around-randomness&quot;&gt;- A story about planning around randomness&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Sun, 01 Oct 2023 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/meteorshowers</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/meteorshowers</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>PyTorch traced models</title>
+        
+          <description>&lt;h1 id=&quot;pytorch-traced-models&quot;&gt;PyTorch traced models&lt;/h1&gt;
+&lt;h3 id=&quot;--here-are-some-of-my-notes--excerpts-from-pytorch-documentation-that-i-found-while-researching-pytorch-traced-models&quot;&gt;- Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models.&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Thu, 23 Mar 2023 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/pytorch-traced-models</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/pytorch-traced-models</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Mixer-TTS</title>
+        
+          <description>&lt;h1 id=&quot;mixer-tts-non-autoregressive-fast-and-compact-text-to-speech-model-conditioned-on-language-model-embeddings&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings&lt;/code&gt;&lt;/h1&gt;
+&lt;h3 id=&quot;by-oktai-tatanov-stanislav-beliaev-boris-ginsburg-nvidia-santa-clara&quot;&gt;by &lt;a href=&quot;https://ru.linkedin.com/in/oktai15&quot;&gt;Oktai Tatanov&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/stasbel&quot;&gt;Stanislav Beliaev&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/boris-ginsburg-2249545&quot;&gt;Boris Ginsburg&lt;/a&gt; (NVIDIA, Santa Clara).&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Sun, 07 Nov 2021 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/mixer-tts</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/mixer-tts</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory</title>
+        
+          <description>&lt;h1 id=&quot;how-to-guide-using-nvidia-rapids-on-jfrog-artifactory&quot;&gt;How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory&lt;/h1&gt;
+&lt;h3 id=&quot;covers-setup-of-remote-repositories-on-artifactory-7x-and-rapids-conda-installation&quot;&gt;Covers setup of remote repositories on Artifactory 7.x and RAPIDS conda installation.&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Thu, 17 Dec 2020 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/jfrog-artifactory</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/jfrog-artifactory</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>My favorite quotes</title>
+        
+          <description>&lt;h1 id=&quot;my-favorite-quotes&quot;&gt;My favorite quotes&lt;/h1&gt;
+&lt;h3 id=&quot;--some-quotes-that-have-guided-me-through-my-life&quot;&gt;- Some quotes that have guided me through my life&lt;/h3&gt;
+
+</description>
+        
+        <pubDate>Sun, 01 Nov 2020 12:00:00 +0000</pubDate>
+        <link>
+        https://aroraakshit.github.io/quotes</link>
+        <guid isPermaLink="true">https://aroraakshit.github.io/quotes</guid>
+      </item>
+      
+    
+  </channel>
+</rss>
