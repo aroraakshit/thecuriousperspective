@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>PyTorch traced models</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/syntax.css" />
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+    
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="Journals" />
+    <link rel="shortcut icon" href="https://aroraakshit.github.io/thecuriousperspective/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Akshit Arora" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="PyTorch traced models" />
+    <meta property="og:description" content="PyTorch traced models - Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models. To setup dev environment to test code in this notebook: # launch the docker container with latest NGC pytorch image available here: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags docker run --gpus=2 --rm" />
+    <meta property="og:url" content="https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models" />
+    <meta property="og:image" content="https://aroraakshit.github.io/thecuriousperspective/assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2023-03-23T12:00:00+00:00" />
+    <meta property="article:modified_time" content="2023-03-23T12:00:00+00:00" />
+    <meta property="article:tag" content="Eng" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PyTorch traced models" />
+    <meta name="twitter:description" content="PyTorch traced models - Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models. To setup dev environment to test code in this notebook: # launch the docker container with latest NGC pytorch image available here: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags docker run --gpus=2 --rm" />
+    <meta name="twitter:url" content="https://aroraakshit.github.io/thecuriousperspective/" />
+    <meta name="twitter:image" content="https://aroraakshit.github.io/thecuriousperspective/assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Akshit Arora" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Eng" />
+    <meta name="twitter:site" content="@" />
+    <meta name="twitter:creator" content="@" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <!-- <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Akshit Arora",
+        "logo": "https://aroraakshit.github.io/thecuriousperspective/assets/images/blog-icon.png"
+    },
+    "url": "https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://aroraakshit.github.io/thecuriousperspective/assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models"
+    },
+    "description": "PyTorch traced models - Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models. To setup dev environment to test code in this notebook: # launch the docker container with latest NGC pytorch image available here: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags docker run --gpus=2 --rm"
+}
+    </script> -->
+
+    <!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+    <script type="text/javascript">
+    ghost.init({
+    	clientId: "ghost-frontend",
+    	clientSecret: "f84a07a72b17"
+    });
+    </script> -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "dateCreated": "2024-07-17T16:37:33-07:00",
+            "dateModified": "2024-07-17T16:37:34-07:00",
+            "mainEntity": {
+            "@type": "Person",
+            "name": "Akshit Arora",
+            "alternateName": "thecuriousperspective",
+            "description": "Sr. Data Scientist at NVIDIA, Text-to-speech",
+            "image": [
+                "https://aroraakshit.github.io/assets/img/me.JPG",
+                "https://developer-blogs.nvidia.com/wp-content/uploads/2024/03/akshit-arora-262x262.jpg",
+                "https://blogs.nvidia.com/wp-content/uploads/2024/02/NVIDIA-Voice-Challenge-Team-scaled.jpg",
+                "https://d2908q01vomqb2.cloudfront.net/e6c3dd630428fd54834172b8fd2735fed9416da4/2024/05/22/IMG-2024-05-22-13.37.50.png"
+            ],
+            "sameAs": [
+                "https://aroraakshit.github.io/",
+                "https://www.linkedin.com/in/aakshit/",
+                "https://github.com/aroraakshit",
+                "https://scholar.google.com/citations?user=JWH0Q2UAAAAJ",
+                "https://aroraakshit.substack.com",
+                "https://developer.nvidia.com/blog/author/akshita/",
+                "https://www.nvidia.com/en-us/on-demand/search/?facet.mimetype[]=event%20session&layout=list&page=1&q=%22Akshit%20Arora%22&sort=date&sortDir=desc",
+                "https://x.com/_AkshitArora",
+                "https://medium.com/@aroraakshit",
+                "https://topmate.io/akshitarora",
+                "https://www.youtube.com/c/AkshitArora",
+                "https://www.researchgate.net/profile/Akshit-Arora",
+                "https://ieeexplore.ieee.org/author/37090053386",
+                "https://sigport.org/authors/akshit-arora",
+                "https://aroraakshit.github.io/thecuriousperspective/author/aroraakshit/",
+                "https://akshit-arora.exposure.co",
+                "https://500px.com/p/AkshitArora",
+                "https://www.instagram.com/groundctmajortom/",
+                "https://openreview.net/profile?id=~Akshit_Arora1",
+                "https://aws.amazon.com/blogs/machine-learning/accelerate-your-generative-ai-distributed-training-workloads-with-the-nvidia-nemo-framework-on-amazon-eks/",
+                "https://aws.amazon.com/blogs/hpc/large-scale-training-with-nemo-megatron-on-aws-parallelcluster-using-p5-instances/"
+            ]
+            }
+        }
+        </script>    
+    <meta name="generator" content="Jekyll 3.6.2" />
+    <link rel="alternate" type="application/rss+xml" title="PyTorch traced models" href="/thecuriousperspective/feed.xml" />
+
+
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://aroraakshit.github.io/thecuriousperspective/"><img src="/thecuriousperspective/assets/images/blog-icon.png" alt="Akshit Arora" /></a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/">Home</a></li>
+    <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/research">Research</a></li>
+    <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/eng">Engineering</a></li>
+    <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/tag/life">Life</a></li>
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/music">Music</a></li> -->
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/books">Books</a></li> -->
+    <!-- <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/tag/quotes">Quotes</a></li> -->
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/miscellaneous">Miscellaneous</a></li> -->
+    <li class="nav-home" role="menuitem"><a href="https://aroraakshit.github.io/#research">Projects</a></li>
+    <li class="nav-home" role="menuitem"><a href="https://aroraakshit.github.io/">About Me</a></li>
+</ul>
+
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+            
+            
+            
+                <a class="social-link social-link-md" href="https://akshit-arora.exposure.co/" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/>
+  </svg></a>
+            
+            
+                <a class="social-link social-link-md" href="https://aroraakshit.substack.com/" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-substack" viewBox="0 0 16 16">
+    <path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"/>
+</svg></a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-eng tag-dl post ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="23 March 2023">23 March 2023</time>
+                    
+                        <span class="date-divider">/</span>
+                        
+                            
+                               <a href='/thecuriousperspective/tag/eng/'>ENG</a>,
+                            
+                        
+                            
+                               <a href='/thecuriousperspective/tag/dl/'>DL</a>
+                            
+                        
+                    
+                </section>
+                <h1 class="post-full-title">PyTorch traced models</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/thecuriousperspective/assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <h1 id="pytorch-traced-models">PyTorch traced models</h1>
+<h3 id="--here-are-some-of-my-notes--excerpts-from-pytorch-documentation-that-i-found-while-researching-pytorch-traced-models">- Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models.</h3>
+
+<p>To setup dev environment to test code in this notebook:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># launch the docker container with latest NGC pytorch image available here: https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags </span>
+docker run <span class="nt">--gpus</span><span class="o">=</span>2 <span class="nt">--rm</span> <span class="nt">-d</span> <span class="nt">-it</span> <span class="nt">-p</span> 8888:8888 <span class="nt">-p</span> 6006:6006 <span class="nt">-v</span> /home/akshita/github/:/github <span class="nt">--ipc</span><span class="o">=</span>host nvcr.io/nvidia/pytorch:23.02-py3
+docker <span class="nb">exec</span> <span class="nt">-it</span> charming_shirley /bin/bash
+
+<span class="c"># start a detached screen named playground</span>
+apt update
+apt <span class="nb">install </span>screen
+screen <span class="nt">-Sdm</span> playground<span class="p">;</span> screen <span class="nt">-ls</span>
+
+<span class="c"># run jupyter lab in a the background on port 8888</span>
+screen <span class="nt">-S</span> playground <span class="nt">-X</span> screen <span class="nt">-t</span> jupyter bash <span class="nt">-c</span> <span class="s2">"cd / ; jupyter lab --ip=0.0.0.0 --port 8888 --allow-root --NotebookApp.token='' --notebook-dir=/ --NotebookApp.allow_origin='*'"</span>
+
+<span class="c"># run tensorboard in the background on port 6006</span>
+screen <span class="nt">-S</span> playground <span class="nt">-X</span> screen <span class="nt">-t</span> tensorboard bash <span class="nt">-c</span> <span class="s2">"cd / ; tensorboard --logdir=."</span>
+</code></pre></div></div>
+
+<h2 id="why-are-python-programs-disadvantageous-for-performance-and-multi-threading-reasons-in-production-environment">Why are Python programs disadvantageous for performance and multi-threading reasons in production environment?</h2>
+
+<p>TBD</p>
+
+<h2 id="pytorch-solution">PyTorch solution</h2>
+
+<p>People like PyTorch because it is Pythonic.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">akshita</span><span class="o">@</span><span class="n">akshita</span><span class="o">-</span><span class="n">mlt</span> <span class="n">github</span> <span class="o">%</span> <span class="n">python3</span>
+<span class="n">Python</span> <span class="mf">3.9</span><span class="p">.</span><span class="mi">6</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">Oct</span> <span class="mi">18</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">40</span><span class="p">)</span> 
+<span class="p">[</span><span class="n">Clang</span> <span class="mf">14.0</span><span class="p">.</span><span class="mi">0</span> <span class="p">(</span><span class="n">clang</span><span class="o">-</span><span class="mf">1400.0</span><span class="p">.</span><span class="mf">29.202</span><span class="p">)]</span> <span class="n">on</span> <span class="n">darwin</span>
+<span class="n">Type</span> <span class="s">"help"</span><span class="p">,</span> <span class="s">"copyright"</span><span class="p">,</span> <span class="s">"credits"</span> <span class="ow">or</span> <span class="s">"license"</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="p">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">this</span>
+<span class="n">The</span> <span class="n">Zen</span> <span class="n">of</span> <span class="n">Python</span><span class="p">,</span> <span class="n">by</span> <span class="n">Tim</span> <span class="n">Peters</span>
+
+<span class="n">Beautiful</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">ugly</span><span class="p">.</span>
+<span class="n">Explicit</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">implicit</span><span class="p">.</span>
+<span class="n">Simple</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="nb">complex</span><span class="p">.</span>
+<span class="n">Complex</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">complicated</span><span class="p">.</span>
+<span class="n">Flat</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">nested</span><span class="p">.</span>
+<span class="n">Sparse</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">dense</span><span class="p">.</span>
+<span class="n">Readability</span> <span class="n">counts</span><span class="p">.</span>
+<span class="n">Special</span> <span class="n">cases</span> <span class="n">aren</span><span class="s">'t special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you'</span><span class="n">re</span> <span class="n">Dutch</span><span class="p">.</span>
+<span class="n">Now</span> <span class="ow">is</span> <span class="n">better</span> <span class="n">than</span> <span class="n">never</span><span class="p">.</span>
+<span class="n">Although</span> <span class="n">never</span> <span class="ow">is</span> <span class="n">often</span> <span class="n">better</span> <span class="n">than</span> <span class="o">*</span><span class="n">right</span><span class="o">*</span> <span class="n">now</span><span class="p">.</span>
+<span class="n">If</span> <span class="n">the</span> <span class="n">implementation</span> <span class="ow">is</span> <span class="n">hard</span> <span class="n">to</span> <span class="n">explain</span><span class="p">,</span> <span class="n">it</span><span class="s">'s a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let'</span><span class="n">s</span> <span class="n">do</span> <span class="n">more</span> <span class="n">of</span> <span class="n">those</span><span class="err">!</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Simple: models are object oriented Python programs</li>
+  <li>Debuggable: print, pdb, REPL</li>
+  <li>Hackable: use any Python library</li>
+</ul>
+
+<p>This serves the purpose of making PyTorch user-friendly/readable.</p>
+
+<p>Now lets look at production requirements</p>
+<ul>
+  <li>Portability - models should be exportable to a wide variety of environments, from C++ servers to mobile.
+    <ul>
+      <li>Previously in PyTorch - tight coupling of models to the python runtime makes exporting difficult</li>
+    </ul>
+  </li>
+  <li>Performance - we want to optimize common patterns in neural networks to improve inference latency and throughput
+    <ul>
+      <li>Previously in PyTorch - There exist numerous further optimization opportunities that we cannot achieve with the level of dynamism in the python language</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Why not use a separate framework like cafe2 for deployment? - it became a bottleneck in internal usage at fb. And also, people want a pythonic experience all the way through.</p>
+
+<p>We need a system that can:</p>
+<ul>
+  <li>faithfully capture the structure of pytorch programs with minimal user intervention (via Scripting and Tracing)</li>
+  <li>use that structure to optimize and run them</li>
+</ul>
+
+<p>PyTorch can run in 2 modes:</p>
+<ol>
+  <li>Eager mode (default mode; for prototyping, training and experimenting) and</li>
+  <li>Script mode (for production deployment).</li>
+</ol>
+
+<p>To go from eager to script, we can use:</p>
+<ol>
+  <li>Scripting - <code class="language-plaintext highlighter-rouge">torch.jit.script()</code></li>
+  <li>Tracing - <code class="language-plaintext highlighter-rouge">torch.jit.trace()</code></li>
+</ol>
+
+<h3 id="tracing">Tracing</h3>
+<ul>
+  <li>Takes an existing eager model with the provided example input. Tracer runs the function, recording the tensor ops performed. We turn the recording into a torchscript module.</li>
+  <li>When using <code class="language-plaintext highlighter-rouge">torch.jit.trace</code> you’ll provide your model and sample input as arguments. The input will be fed through the model as in regular inference and the executed operations will be traced and recorded into TorchScript. Logical structure will be frozen into the path taken during this sample execution. – Paul’s blog</li>
+  <li>PRO: can reuse existing eager model code</li>
+  <li>CON: control-flow and data structures are ignored.</li>
+</ul>
+
+<p>Example from a PyTorch video:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="n">traced_foo</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">trace</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+
+<span class="n">traced_resnet</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">trace</span><span class="p">(</span><span class="n">torchvision</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="n">resnet18</span><span class="p">(),</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Exploring a bit further:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">traced_foo</span><span class="p">.</span><span class="n">graph</span><span class="p">)</span> <span class="c1"># see inspecting graphs reference
+</span><span class="n">graph</span><span class="p">(</span><span class="o">%</span><span class="n">x</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">),</span>
+        <span class="o">%</span><span class="n">y</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)):</span>
+    <span class="o">%</span><span class="mi">2</span> <span class="p">:</span> <span class="n">Long</span><span class="p">(</span><span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}]()</span> <span class="c1"># /tmp/ipykernel_1647/2218637708.py:2:0
+</span>    <span class="o">%</span><span class="mi">3</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">mul</span><span class="p">(</span><span class="o">%</span><span class="n">x</span><span class="p">,</span> <span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/2218637708.py:2:0
+</span>    <span class="o">%</span><span class="mi">4</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">]()</span> <span class="c1"># /tmp/ipykernel_1647/2218637708.py:2:0
+</span>    <span class="o">%</span><span class="mi">5</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">add</span><span class="p">(</span><span class="o">%</span><span class="mi">3</span><span class="p">,</span> <span class="o">%</span><span class="n">y</span><span class="p">,</span> <span class="o">%</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/2218637708.py:2:0
+</span>        <span class="k">return</span> <span class="p">(</span><span class="o">%</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">traced_foo</span><span class="p">)</span>
+    <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">ScriptFunction</span>
+    <span class="c1"># https://pytorch.org/docs/stable/generated/torch.jit.ScriptFunction.html
+</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">traced_foo</span><span class="p">.</span><span class="n">code</span><span class="p">)</span> <span class="c1"># see inspecting code reference
+</span>    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+            <span class="n">y</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">_0</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">CONSTANTS</span><span class="p">.</span><span class="n">c0</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">traced_resnet</span><span class="p">)</span>
+    <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">_trace</span><span class="p">.</span><span class="n">TopLevelTracedModule</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">traced_resnet</span>
+    <span class="n">ResNet</span><span class="p">(</span>
+    <span class="n">original_name</span><span class="o">=</span><span class="n">ResNet</span>
+    <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">maxpool</span><span class="p">):</span> <span class="n">MaxPool2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">MaxPool2d</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">layer1</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">layer2</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">downsample</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+            <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">layer3</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">downsample</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+            <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">layer4</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">downsample</span><span class="p">):</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">original_name</span><span class="o">=</span><span class="n">Sequential</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+            <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">BasicBlock</span><span class="p">(</span>
+        <span class="n">original_name</span><span class="o">=</span><span class="n">BasicBlock</span>
+        <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn1</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">ReLU</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Conv2d</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">bn2</span><span class="p">):</span> <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">BatchNorm2d</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">avgpool</span><span class="p">):</span> <span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">AdaptiveAvgPool2d</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">fc</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">Linear</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">traced_resnet</span><span class="p">.</span><span class="n">code</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">fc</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">fc</span>
+        <span class="n">avgpool</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">avgpool</span>
+        <span class="n">layer4</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">layer4</span>
+        <span class="n">layer3</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">layer3</span>
+        <span class="n">layer2</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">layer2</span>
+        <span class="n">layer1</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">layer1</span>
+        <span class="n">maxpool</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">maxpool</span>
+        <span class="n">relu</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">relu</span>
+        <span class="n">bn1</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">bn1</span>
+        <span class="n">conv1</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">conv1</span>
+        <span class="n">_0</span> <span class="o">=</span> <span class="p">(</span><span class="n">relu</span><span class="p">).</span><span class="n">forward</span><span class="p">((</span><span class="n">bn1</span><span class="p">).</span><span class="n">forward</span><span class="p">((</span><span class="n">conv1</span><span class="p">).</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">),</span> <span class="p">),</span> <span class="p">)</span>
+        <span class="n">_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer1</span><span class="p">).</span><span class="n">forward</span><span class="p">((</span><span class="n">maxpool</span><span class="p">).</span><span class="n">forward</span><span class="p">(</span><span class="n">_0</span><span class="p">,</span> <span class="p">),</span> <span class="p">)</span>
+        <span class="n">_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer3</span><span class="p">).</span><span class="n">forward</span><span class="p">((</span><span class="n">layer2</span><span class="p">).</span><span class="n">forward</span><span class="p">(</span><span class="n">_1</span><span class="p">,</span> <span class="p">),</span> <span class="p">)</span>
+        <span class="n">_3</span> <span class="o">=</span> <span class="p">(</span><span class="n">avgpool</span><span class="p">).</span><span class="n">forward</span><span class="p">((</span><span class="n">layer4</span><span class="p">).</span><span class="n">forward</span><span class="p">(</span><span class="n">_2</span><span class="p">,</span> <span class="p">),</span> <span class="p">)</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">_3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">fc</span><span class="p">).</span><span class="n">forward</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">traced_resnet</span><span class="p">.</span><span class="n">graph</span>
+    <span class="n">graph</span><span class="p">(</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torchvision</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="n">resnet</span><span class="p">.</span><span class="n">ResNet</span><span class="p">,</span>
+            <span class="o">%</span><span class="n">x</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">150528</span><span class="p">,</span> <span class="mi">50176</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)):</span>
+        <span class="o">%</span><span class="n">fc</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">Linear</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"fc"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">avgpool</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">pooling</span><span class="p">.</span><span class="n">AdaptiveAvgPool2d</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"avgpool"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">layer4</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">___torch_mangle_59</span><span class="p">.</span><span class="n">Sequential</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"layer4"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">layer3</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">___torch_mangle_43</span><span class="p">.</span><span class="n">Sequential</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"layer3"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">layer2</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">___torch_mangle_27</span><span class="p">.</span><span class="n">Sequential</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"layer2"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">layer1</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">Sequential</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"layer1"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">maxpool</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">pooling</span><span class="p">.</span><span class="n">MaxPool2d</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"maxpool"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">relu</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">activation</span><span class="p">.</span><span class="n">ReLU</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"relu"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">bn1</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">batchnorm</span><span class="p">.</span><span class="n">BatchNorm2d</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"bn1"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="n">conv1</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">modules</span><span class="p">.</span><span class="n">conv</span><span class="p">.</span><span class="n">Conv2d</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"conv1"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1613</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">conv1</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="n">x</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1614</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">bn1</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="mi">1613</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1615</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">relu</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="mi">1614</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1616</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">maxpool</span><span class="p">,</span> <span class="o">%</span><span class="mi">1615</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1617</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">layer1</span><span class="p">,</span> <span class="o">%</span><span class="mi">1616</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1618</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">layer2</span><span class="p">,</span> <span class="o">%</span><span class="mi">1617</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1619</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">layer3</span><span class="p">,</span> <span class="o">%</span><span class="mi">1618</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1620</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">layer4</span><span class="p">,</span> <span class="o">%</span><span class="mi">1619</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1621</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">avgpool</span><span class="p">,</span> <span class="o">%</span><span class="mi">1620</span><span class="p">)</span>
+        <span class="o">%</span><span class="mi">1270</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">]()</span> <span class="c1"># /usr/local/lib/python3.8/dist-packages/torchvision/models/resnet.py:279:0
+</span>        <span class="o">%</span><span class="mi">1271</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">]()</span> <span class="c1"># /usr/local/lib/python3.8/dist-packages/torchvision/models/resnet.py:279:0
+</span>        <span class="o">%</span><span class="nb">input</span> <span class="p">:</span> <span class="n">Float</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">512</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">cpu</span><span class="p">)</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">flatten</span><span class="p">(</span><span class="o">%</span><span class="mi">1621</span><span class="p">,</span> <span class="o">%</span><span class="mi">1270</span><span class="p">,</span> <span class="o">%</span><span class="mi">1271</span><span class="p">)</span> <span class="c1"># /usr/local/lib/python3.8/dist-packages/torchvision/models/resnet.py:279:0
+</span>        <span class="o">%</span><span class="mi">1622</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">CallMethod</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"forward"</span><span class="p">](</span><span class="o">%</span><span class="n">fc</span><span class="p">,</span> <span class="o">%</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">%</span><span class="mi">1622</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="scripting">Scripting</h3>
+
+<p><img src="assets/images/2023-03-23-pytorch-traced-models/scripting-1.png" alt="figure:1" /></p>
+
+<ul>
+  <li>When using <code class="language-plaintext highlighter-rouge">torch.jit.script</code> you’ll simply provide your model as an argument. TorchScript will be generated from the static inspection of the nn.Module contents (recursively). – Paul’s blog</li>
+</ul>
+
+<p>However with tracing, we do not preserve control flow or other language features like data structures, those will all be erased, and only tensor ops will remain.</p>
+
+<p>So we have script compiler for that - which says that we write the model directly in TorchScript, a high performance subset of Python (this subset is getting more and more rich and expansive with time).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="k">class</span> <span class="nc">RNN</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W_h</span><span class="p">,</span> <span class="n">U_h</span><span class="p">,</span> <span class="n">W_y</span><span class="p">,</span> <span class="n">b_h</span><span class="p">,</span> <span class="n">b_y</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_h</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">W_h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">U_h</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">U_h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_y</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">W_y</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="p">.</span><span class="n">b_h</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">b_h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">b_y</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">b_y</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">@</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_h</span> <span class="o">+</span> <span class="n">h</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="p">.</span><span class="n">U_h</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">b_h</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">+=</span> <span class="p">[</span><span class="n">torch</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">h</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_y</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">b_y</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"stats: "</span><span class="p">,</span> <span class="n">h</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">h</span><span class="p">.</span><span class="n">var</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">h</span>
+
+<span class="n">rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">scripted</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">script</span><span class="p">(</span><span class="n">rnn</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Exploring a bit further:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">scripted</span>
+    <span class="n">RecursiveScriptModule</span><span class="p">(</span><span class="n">original_name</span><span class="o">=</span><span class="n">RNN</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">scripted</span><span class="p">.</span><span class="n">code</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">h</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]:</span>
+  <span class="n">_0</span> <span class="o">=</span> <span class="n">annotate</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Tensor</span><span class="p">],</span> <span class="p">[])</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">_0</span>
+  <span class="n">h0</span> <span class="o">=</span> <span class="n">h</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+    <span class="n">_1</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="n">W_h</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_h</span>
+    <span class="n">_2</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">_1</span><span class="p">,</span> <span class="n">W_h</span><span class="p">),</span> <span class="n">h0</span><span class="p">)</span>
+    <span class="n">U_h</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">U_h</span>
+    <span class="n">b_h</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">b_h</span>
+    <span class="n">_3</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">__and__</span><span class="p">(</span><span class="n">_2</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">U_h</span><span class="p">,</span> <span class="n">b_h</span><span class="p">))</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">_3</span><span class="p">)</span>
+    <span class="n">W_y</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_y</span>
+    <span class="n">b_y</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">b_y</span>
+    <span class="n">_4</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">__and__</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">W_y</span><span class="p">,</span> <span class="n">b_y</span><span class="p">))</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">add_</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="n">torch</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">_4</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">eq</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">0</span><span class="p">):</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"stats: "</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">h1</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">var</span><span class="p">(</span><span class="n">h1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">pass</span>
+    <span class="n">y</span><span class="p">,</span> <span class="n">h0</span> <span class="o">=</span> <span class="n">y0</span><span class="p">,</span> <span class="n">h1</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">h0</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">scripted</span><span class="p">.</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">graph</span><span class="p">(</span><span class="o">%</span><span class="bp">self</span> <span class="p">:</span> <span class="n">__torch__</span><span class="p">.</span><span class="n">RNN</span><span class="p">,</span>
+      <span class="o">%</span><span class="n">x</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+      <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">):</span>
+  <span class="o">%</span><span class="mi">48</span> <span class="p">:</span> <span class="n">NoneType</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">()</span>
+  <span class="o">%</span><span class="mi">46</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="s">"stats: "</span><span class="p">]()</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:17:22
+</span>  <span class="o">%</span><span class="mi">20</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">]()</span>
+  <span class="o">%</span><span class="mi">9</span> <span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">]()</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:13:8
+</span>  <span class="o">%</span><span class="mi">5</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">]()</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:13:30
+</span>  <span class="o">%</span><span class="mi">42</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Constant</span><span class="p">[</span><span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">]()</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:16:19
+</span>  <span class="o">%</span><span class="mi">75</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">[]</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">ListConstruct</span><span class="p">()</span>
+  <span class="o">%</span><span class="mi">6</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">size</span><span class="p">(</span><span class="o">%</span><span class="n">x</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:13:23
+</span>  <span class="o">%</span><span class="n">y</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">[],</span> <span class="o">%</span><span class="n">h</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Loop</span><span class="p">(</span><span class="o">%</span><span class="mi">6</span><span class="p">,</span> <span class="o">%</span><span class="mi">9</span><span class="p">,</span> <span class="o">%</span><span class="mi">75</span><span class="p">,</span> <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:13:8
+</span>    <span class="n">block0</span><span class="p">(</span><span class="o">%</span><span class="n">t</span><span class="p">.</span><span class="mi">1</span> <span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">%</span><span class="n">y</span><span class="p">.</span><span class="mi">11</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">[],</span> <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">17</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">):</span>
+      <span class="o">%</span><span class="mi">16</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">select</span><span class="p">(</span><span class="o">%</span><span class="n">x</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="mi">5</span><span class="p">,</span> <span class="o">%</span><span class="n">t</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:27
+</span>      <span class="o">%</span><span class="n">W_h</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"W_h"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+      <span class="o">%</span><span class="mi">18</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">matmul</span><span class="p">(</span><span class="o">%</span><span class="mi">16</span><span class="p">,</span> <span class="o">%</span><span class="n">W_h</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:27
+</span>      <span class="o">%</span><span class="mi">21</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">add</span><span class="p">(</span><span class="o">%</span><span class="mi">18</span><span class="p">,</span> <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">17</span><span class="p">,</span> <span class="o">%</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:27
+</span>      <span class="o">%</span><span class="n">U_h</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"U_h"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+      <span class="o">%</span><span class="n">b_h</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"b_h"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+      <span class="o">%</span><span class="mi">25</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">add</span><span class="p">(</span><span class="o">%</span><span class="n">U_h</span><span class="p">,</span> <span class="o">%</span><span class="n">b_h</span><span class="p">,</span> <span class="o">%</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:49
+</span>      <span class="o">%</span><span class="mi">26</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">__and__</span><span class="p">(</span><span class="o">%</span><span class="mi">21</span><span class="p">,</span> <span class="o">%</span><span class="mi">25</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:27
+</span>      <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">5</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">tanh</span><span class="p">(</span><span class="o">%</span><span class="mi">26</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:14:16
+</span>      <span class="o">%</span><span class="n">W_y</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"W_y"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+      <span class="o">%</span><span class="n">b_y</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">GetAttr</span><span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="s">"b_y"</span><span class="p">](</span><span class="o">%</span><span class="bp">self</span><span class="p">)</span>
+      <span class="o">%</span><span class="mi">34</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">add</span><span class="p">(</span><span class="o">%</span><span class="n">W_y</span><span class="p">,</span> <span class="o">%</span><span class="n">b_y</span><span class="p">,</span> <span class="o">%</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:15:33
+</span>      <span class="o">%</span><span class="mi">35</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">__and__</span><span class="p">(</span><span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">%</span><span class="mi">34</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:15:29
+</span>      <span class="o">%</span><span class="mi">36</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">tanh</span><span class="p">(</span><span class="o">%</span><span class="mi">35</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:15:18
+</span>      <span class="o">%</span><span class="mi">37</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">[]</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">ListConstruct</span><span class="p">(</span><span class="o">%</span><span class="mi">36</span><span class="p">)</span>
+      <span class="o">%</span><span class="n">y</span><span class="p">.</span><span class="mi">5</span> <span class="p">:</span> <span class="n">Tensor</span><span class="p">[]</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">add_</span><span class="p">(</span><span class="o">%</span><span class="n">y</span><span class="p">.</span><span class="mi">11</span><span class="p">,</span> <span class="o">%</span><span class="mi">37</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:15:12
+</span>      <span class="o">%</span><span class="mi">43</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">remainder</span><span class="p">(</span><span class="o">%</span><span class="n">t</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">%</span><span class="mi">42</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:16:15
+</span>      <span class="o">%</span><span class="mi">44</span> <span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">eq</span><span class="p">(</span><span class="o">%</span><span class="mi">43</span><span class="p">,</span> <span class="o">%</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:16:15
+</span>       <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">If</span><span class="p">(</span><span class="o">%</span><span class="mi">44</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:16:12
+</span>        <span class="n">block0</span><span class="p">():</span>
+          <span class="o">%</span><span class="mi">49</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">mean</span><span class="p">(</span><span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">%</span><span class="mi">48</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:17:33
+</span>          <span class="o">%</span><span class="mi">52</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">var</span><span class="p">(</span><span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">%</span><span class="mi">9</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:17:43
+</span>           <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">Print</span><span class="p">(</span><span class="o">%</span><span class="mi">46</span><span class="p">,</span> <span class="o">%</span><span class="mi">49</span><span class="p">,</span> <span class="o">%</span><span class="mi">52</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:17:16
+</span>          <span class="o">-&gt;</span> <span class="p">()</span>
+        <span class="n">block1</span><span class="p">():</span>
+          <span class="o">-&gt;</span> <span class="p">()</span>
+      <span class="o">-&gt;</span> <span class="p">(</span><span class="o">%</span><span class="mi">9</span><span class="p">,</span> <span class="o">%</span><span class="n">y</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">%</span><span class="n">h</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span>
+  <span class="o">%</span><span class="mi">55</span> <span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">aten</span><span class="p">::</span><span class="n">stack</span><span class="p">(</span><span class="o">%</span><span class="n">y</span><span class="p">,</span> <span class="o">%</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># /tmp/ipykernel_1647/4015499853.py:18:15
+</span>  <span class="o">%</span><span class="mi">57</span> <span class="p">:</span> <span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">=</span> <span class="n">prim</span><span class="p">::</span><span class="n">TupleConstruct</span><span class="p">(</span><span class="o">%</span><span class="mi">55</span><span class="p">,</span> <span class="o">%</span><span class="n">h</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">(</span><span class="o">%</span><span class="mi">57</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="moving-forward-to-production">Moving forward to production</h3>
+
+<p>Per PyTorch docs:</p>
+<blockquote>
+  <p>We provide tools to incrementally transition a model from a pure Python program to a TorchScript program that can be run independently from Python, such as in a standalone C++ program. This makes it possible to train models in PyTorch using familiar tools in Python and then export the model via TorchScript to a production environment where Python programs may be disadvantageous for performance and multi-threading reasons.
+Per Paul’s blog (linked in references):
+TorchScript is one of the most important parts of the Pytorch ecosystem, allowing portable, efficient and nearly seamless deployment. With just a few lines of torch.jit code and some simple model changes you can export an asset that runs anywhere libtorch does. It’s an important toolset to master if you want to run your models outside the lab at high efficiency.</p>
+</blockquote>
+
+<p>How do we use the structure obtained by tracing/scrpting, towards production? - TorchScript models can be saved like a model archive and loaded to run in PyTorch’s just-in-time compiler, instead of the CPython interpreter.</p>
+
+<p>C++ TensorAPIs support bindings to a wide range of languages and deployment environment.</p>
+
+<p>The same TorchScript models can also be loaded in PyTorch Mobile runtime. This demonstrates that torchscript code can be run entirely without python runtime.</p>
+
+<p>There are few key design principles in that JIT intermediate representation (graph, as shown earlier):</p>
+<ul>
+  <li>static typing (provides earlier error messages to the user, allows for more optimization because now memory requirement is known)</li>
+  <li>structured control flow (supports arbitrarily nested ifs and loops)</li>
+  <li>functional by default (helps make optimization decisions)</li>
+</ul>
+
+<h3 id="what-kind-of-optimizations-do-we-want-to-do">What kind of optimizations do we want to do?</h3>
+
+<ol>
+  <li>Algebraic rewriting:
+    <ul>
+      <li>Constant folding, common subexpression elimination, dead code elimination, etc.</li>
+    </ul>
+  </li>
+  <li>Out-of-order execution
+    <ul>
+      <li>re-ordering ops to reduce memory pressure, and make efficient use of cache locality</li>
+    </ul>
+  </li>
+  <li>Fusion
+    <ul>
+      <li>combinint several operators into a single kernel to avoid overheads from roundtrips to memory, PCIe etc.</li>
+    </ul>
+  </li>
+  <li>Target dependent code generation
+    <ul>
+      <li>Taking parts of the program and compiling them for specific hardware</li>
+      <li>Integration ongoing with several code generation frameworks: TVM, Halide, Glow, XLA algebraic rewriting</li>
+    </ul>
+  </li>
+  <li>Maintaining the same semantics is critical for user experience
+    <ul>
+      <li>Users should get optimization “for free”! - there should never be a case where these ops are changing the result of your program. no cost to accuracy.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Dynamism in pytorch script mode - Even with TorchScript’s more static semantics, we want to preserve flexibility and ease of use of eager mode. There is still a lot of dynamism left. Example: given an lstm codeblock:</p>
+<ul>
+  <li>can we fuse this lstm cell? (get it into machine code)</li>
+  <li>what devices are the tensors on?</li>
+  <li>how many dims?</li>
+  <li>how big are those dims?</li>
+  <li>are we using autograd?
+this is something one can only determine at runtime.</li>
+</ul>
+
+<p>Whenever we have something that can be dynamic but is likely static, a jit compile may be useful!</p>
+
+<p><img src="assets/images/2023-03-23-pytorch-traced-models/opt-workflow-1.png" alt="figure:2" /></p>
+
+<p>This is the workflow that a developer can use to optimize a given custom model. Example, <a href="https://pytorch.org/blog/optimizing-cuda-rnn-with-torchscript/">this blog</a> talks about:</p>
+<blockquote>
+  <p>Our goal is for users to be able to write fast, custom RNNs in TorchScript without writing specialized CUDA kernels to achieve similar performance. In this post, we’ll provide a tutorial for how to write your own fast RNNs with TorchScript. To better understand the optimizations TorchScript applies, we’ll examine how those work on a standard LSTM implementation but most of the optimizations can be applied to general RNNs.</p>
+</blockquote>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li>PyTorch official
+    <ul>
+      <li>docs &gt; <a href="https://pytorch.org/docs/stable/jit.html">TorchScript</a> &gt; <a href="https://pytorch.org/docs/stable/jit.html#inspecting-code">Inspecting code</a>, <a href="https://pytorch.org/docs/stable/jit.html#interpreting-graphs">Inspecting graphs</a></li>
+      <li>youtube channel &gt; <a href="https://www.youtube.com/watch?v=2awmrMRf0dA">TorchScript &amp; PyTorch JIT Deep Dive</a></li>
+      <li>source code &gt; <a href="https://pytorch.org/docs/stable/_modules/torch/jit.html">torch.jit</a></li>
+      <li>API refs: <a href="https://pytorch.org/docs/stable/generated/torch.jit.ScriptFunction.html">ScriptFunction</a>, <a href="https://pytorch.org/docs/stable/generated/torch.jit.ScriptModule.html#torch.jit.ScriptModule">ScriptModule</a></li>
+      <li>Tutorials: <a href="https://pytorch.org/tutorials/advanced/cpp_export.html">Loading a TorchScript model in C++</a></li>
+      <li>Blog: <a href="https://pytorch.org/blog/optimizing-cuda-rnn-with-torchscript/">Optimizing CUDA Recurrent Neural Networks with TorchScript</a>, May 2019</li>
+    </ul>
+  </li>
+  <li>NGC <a href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags">PyTorch docker image</a></li>
+  <li>Blogs about PyTorch tracing vs scripting
+    <ul>
+      <li><a href="https://ppwwyyxx.com/blog/2022/TorchScript-Tracing-vs-Scripting/">blog</a> by Yuxin Wu - Software Engineer at Google Brain, May 2022.
+        <ul>
+          <li>Proposes the use of tracing over scripting because complying with scripting requirements is harder and makes the code uglier, in comparison to tracing. I highly recommend going through this blog in detail to understand the comparison between tracing and scripting. The blog ultimately proposes cleverly mixing tracing (by default) and scripting (when required for submodules) for the most optimal export.</li>
+        </ul>
+      </li>
+      <li>Paul Bridger - ML Consultant
+        <ul>
+          <li><a href="https://paulbridger.com/posts/mastering-torchscript/">Mastering TorchScript</a>, October 2020. This blog demonstrates the differences between tracing and scripting via different examples.</li>
+          <li><a href="https://paulbridger.com/posts/video-analytics-deepstream-pipeline/#stage-3-hacked-deepstream-mdash-80-tensorrt-20-torchscript">Object Detection at 1840 FPS with TorchScript, TensorRT and DeepStream</a>, October 2020. This blog talks compares TorchScript vs TensorRT.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Misc
+    <ul>
+      <li><a href="http://movb.de/jekyll-details-support.html">Adding support for HTML5’s details element to Jekyll</a></li>
+      <li><a href="https://netron.app/">Netron.app</a> can be used to visualize any model file (extension .onnx, .pt)</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p>(Coverphoto is from <a href="https://www.youtube.com/watch?v=2awmrMRf0dA">this PyTorch video</a> at 07:00 timestamp)</p>
+</blockquote>
+
+<!-- <details>
+            
+            <summary>Exploring a bit further: (zoom out to see this section)</summary>
+
+                <p>–&gt;
+&lt;!–</p>
+
+
+            </details>
+             -->
+
+                </div>
+            </section>
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="aroraakshit" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/thecuriousperspective/author/aroraakshit">Akshit Arora</a></h4>
+                                
+                                    <p>Senior Data Scientist at NVIDIA, Text-to-Speech</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/thecuriousperspective/author/aroraakshit">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            var this_page_url = 'https://aroraakshit.github.io/pytorch-traced-models';
+                            var this_page_identifier = '/pytorch-traced-models';
+                            var this_page_title = 'PyTorch traced models';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://ghost-deployed-on-github.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/thecuriousperspective/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Akshit Arora &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/thecuriousperspective/tag/eng/">Eng</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/thecuriousperspective/awsmlblogeks">Accelerate your generative AI distributed training workloads with the NVIDIA NeMo Framework on Amazon EKS</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/thecuriousperspective/awshpcpcluster">Large scale training with NeMo Megatron on AWS ParallelCluster using P5 instances</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/thecuriousperspective/jfrog-artifactory">How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/thecuriousperspective/tag/eng/">
+                                
+                                    See all 3 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/thecuriousperspective/meteorshowers">
+                <div class="post-card-image" style="background-image: url(/thecuriousperspective/assets/images/2021-08-28-meteorshowers.jpeg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/thecuriousperspective/meteorshowers">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Life</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Photography</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">How not to capture meteor showers!</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>How not to capture meteor showers!
+- A story about planning around randomness
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                        
+                        <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="Akshit Arora" />
+                        
+                        <span class="post-card-author">
+                            <a href="/thecuriousperspective/author/aroraakshit/">Akshit Arora</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/thecuriousperspective/mixer-tts">
+                <div class="post-card-image" style="background-image: url(/thecuriousperspective/assets/images/2021-11-07-mixer-tts/text-to-speech.jpg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/thecuriousperspective/mixer-tts">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Research</span>
+                            
+                        
+                            
+                               <span class="post-card-tags">Dl</span>
+                            
+                        
+                            
+                               <span class="post-card-tags">Paper-notes</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Tts</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">Mixer-TTS</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings
+by Oktai Tatanov, Stanislav Beliaev, Boris Ginsburg (NVIDIA, Santa Clara).
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                        
+                        <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="Akshit Arora" />
+                        
+                        <span class="post-card-author">
+                            <a href="/thecuriousperspective/author/aroraakshit/">Akshit Arora</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      8 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://aroraakshit.github.io/thecuriousperspective/">
+            
+                <img src="/thecuriousperspective/assets/images/favicon.png" alt="Akshit Arora icon" />
+            
+            <span>Akshit Arora</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">PyTorch traced models</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=PyTorch+traced+models&amp;url=https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://aroraakshit.github.io/thecuriousperspective/pytorch-traced-models"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <center>
+            <iframe src="https://aroraakshit.substack.com/embed" width="480" height="320" style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+        </center>
+        <br> <br>
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://aroraakshit.github.io/thecuriousperspective/">Akshit Arora</a> &copy; 2026</section>
+                <section class="poweredby">Published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyllt/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/thecuriousperspective/">Home</a>
+                    
+                    
+                    
+                    
+                </nav>
+            </div>
+            <div class="site-footer-content inner">
+                <section></section>
+                <section class="poweredby" style="color:#757575; font-size: 10px;">Views expressed here are my own.</section>
+                <section></section>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id=”MathJax-script” async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/thecuriousperspective/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/thecuriousperspective/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PVHRB5H5R2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PVHRB5H5R2');
+</script>
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+</body>
+</html>

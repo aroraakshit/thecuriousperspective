@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Base Meta -->
+    <!-- dynamically fixing the title for tag/author pages -->
+
+
+
+    <title>Mixer-TTS</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/screen.edited.css" />
+    <link rel="stylesheet" type="text/css" href="/thecuriousperspective/assets/built/syntax.css" />
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!--[if IE]>
+        <style>
+            p, ol, ul{
+                width: 100%;
+            }
+            blockquote{
+                width: 100%;
+            }
+        </style>
+    <![endif]-->
+    
+    <!-- This tag outputs SEO meta+structured data and other important settings -->
+    <meta name="description" content="Journals" />
+    <link rel="shortcut icon" href="https://aroraakshit.github.io/thecuriousperspective/assets/images/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://aroraakshit.github.io/thecuriousperspective/mixer-tts" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+     <!--title below is coming from _includes/dynamic_title-->
+    <meta property="og:site_name" content="Akshit Arora" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mixer-TTS" />
+    <meta property="og:description" content="Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings by Oktai Tatanov, Stanislav Beliaev, Boris Ginsburg (NVIDIA, Santa Clara). Available on arXiv - Oct 2021. Code not available yet. This journal was last updated on 11/8/2021. Abstract This paper describes Mixer-TTS, a non-autoregressive model for mel-spectrogram generation." />
+    <meta property="og:url" content="https://aroraakshit.github.io/thecuriousperspective/mixer-tts" />
+    <meta property="og:image" content="https://aroraakshit.github.io/thecuriousperspective/assets/images/2021-11-07-mixer-tts/text-to-speech.jpg" />
+    <meta property="article:publisher" content="https://www.facebook.com/" />
+    <meta property="article:author" content="https://www.facebook.com/" />
+    <meta property="article:published_time" content="2021-11-07T12:00:00+00:00" />
+    <meta property="article:modified_time" content="2021-11-07T12:00:00+00:00" />
+    <meta property="article:tag" content="Research" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mixer-TTS" />
+    <meta name="twitter:description" content="Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings by Oktai Tatanov, Stanislav Beliaev, Boris Ginsburg (NVIDIA, Santa Clara). Available on arXiv - Oct 2021. Code not available yet. This journal was last updated on 11/8/2021. Abstract This paper describes Mixer-TTS, a non-autoregressive model for mel-spectrogram generation." />
+    <meta name="twitter:url" content="https://aroraakshit.github.io/thecuriousperspective/" />
+    <meta name="twitter:image" content="https://aroraakshit.github.io/thecuriousperspective/assets/images/2021-11-07-mixer-tts/text-to-speech.jpg" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Akshit Arora" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Research" />
+    <meta name="twitter:site" content="@" />
+    <meta name="twitter:creator" content="@" />
+    <meta property="og:image:width" content="1400" />
+    <meta property="og:image:height" content="933" />
+
+    <!-- <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Website",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Akshit Arora",
+        "logo": "https://aroraakshit.github.io/thecuriousperspective/assets/images/blog-icon.png"
+    },
+    "url": "https://aroraakshit.github.io/thecuriousperspective/mixer-tts",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://aroraakshit.github.io/thecuriousperspective/assets/images/2021-11-07-mixer-tts/text-to-speech.jpg",
+        "width": 2000,
+        "height": 666
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://aroraakshit.github.io/thecuriousperspective/mixer-tts"
+    },
+    "description": "Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings by Oktai Tatanov, Stanislav Beliaev, Boris Ginsburg (NVIDIA, Santa Clara). Available on arXiv - Oct 2021. Code not available yet. This journal was last updated on 11/8/2021. Abstract This paper describes Mixer-TTS, a non-autoregressive model for mel-spectrogram generation."
+}
+    </script> -->
+
+    <!-- <script type="text/javascript" src="https://demo.ghost.io/public/ghost-sdk.min.js?v=724281a32e"></script>
+    <script type="text/javascript">
+    ghost.init({
+    	clientId: "ghost-frontend",
+    	clientSecret: "f84a07a72b17"
+    });
+    </script> -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "dateCreated": "2024-07-17T16:37:33-07:00",
+            "dateModified": "2024-07-17T16:37:34-07:00",
+            "mainEntity": {
+            "@type": "Person",
+            "name": "Akshit Arora",
+            "alternateName": "thecuriousperspective",
+            "description": "Sr. Data Scientist at NVIDIA, Text-to-speech",
+            "image": [
+                "https://aroraakshit.github.io/assets/img/me.JPG",
+                "https://developer-blogs.nvidia.com/wp-content/uploads/2024/03/akshit-arora-262x262.jpg",
+                "https://blogs.nvidia.com/wp-content/uploads/2024/02/NVIDIA-Voice-Challenge-Team-scaled.jpg",
+                "https://d2908q01vomqb2.cloudfront.net/e6c3dd630428fd54834172b8fd2735fed9416da4/2024/05/22/IMG-2024-05-22-13.37.50.png"
+            ],
+            "sameAs": [
+                "https://aroraakshit.github.io/",
+                "https://www.linkedin.com/in/aakshit/",
+                "https://github.com/aroraakshit",
+                "https://scholar.google.com/citations?user=JWH0Q2UAAAAJ",
+                "https://aroraakshit.substack.com",
+                "https://developer.nvidia.com/blog/author/akshita/",
+                "https://www.nvidia.com/en-us/on-demand/search/?facet.mimetype[]=event%20session&layout=list&page=1&q=%22Akshit%20Arora%22&sort=date&sortDir=desc",
+                "https://x.com/_AkshitArora",
+                "https://medium.com/@aroraakshit",
+                "https://topmate.io/akshitarora",
+                "https://www.youtube.com/c/AkshitArora",
+                "https://www.researchgate.net/profile/Akshit-Arora",
+                "https://ieeexplore.ieee.org/author/37090053386",
+                "https://sigport.org/authors/akshit-arora",
+                "https://aroraakshit.github.io/thecuriousperspective/author/aroraakshit/",
+                "https://akshit-arora.exposure.co",
+                "https://500px.com/p/AkshitArora",
+                "https://www.instagram.com/groundctmajortom/",
+                "https://openreview.net/profile?id=~Akshit_Arora1",
+                "https://aws.amazon.com/blogs/machine-learning/accelerate-your-generative-ai-distributed-training-workloads-with-the-nvidia-nemo-framework-on-amazon-eks/",
+                "https://aws.amazon.com/blogs/hpc/large-scale-training-with-nemo-megatron-on-aws-parallelcluster-using-p5-instances/"
+            ]
+            }
+        }
+        </script>    
+    <meta name="generator" content="Jekyll 3.6.2" />
+    <link rel="alternate" type="application/rss+xml" title="Mixer-TTS" href="/thecuriousperspective/feed.xml" />
+
+
+</head>
+<body class="post-template">
+
+    <div class="site-wrapper">
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="https://aroraakshit.github.io/thecuriousperspective/"><img src="/thecuriousperspective/assets/images/blog-icon.png" alt="Akshit Arora" /></a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/">Home</a></li>
+    <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/research">Research</a></li>
+    <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/eng">Engineering</a></li>
+    <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/tag/life">Life</a></li>
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/music">Music</a></li> -->
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/books">Books</a></li> -->
+    <!-- <li class="nav-home" role="menuitem"><a href="/thecuriousperspective/tag/quotes">Quotes</a></li> -->
+    <!-- <li class="nav-about" role="menuitem"><a href="/thecuriousperspective/tag/miscellaneous">Miscellaneous</a></li> -->
+    <li class="nav-home" role="menuitem"><a href="https://aroraakshit.github.io/#research">Projects</a></li>
+    <li class="nav-home" role="menuitem"><a href="https://aroraakshit.github.io/">About Me</a></li>
+</ul>
+
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+            
+            
+            
+                <a class="social-link social-link-md" href="https://akshit-arora.exposure.co/" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/>
+  </svg></a>
+            
+            
+                <a class="social-link social-link-md" href="https://aroraakshit.substack.com/" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-substack" viewBox="0 0 16 16">
+    <path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"/>
+</svg></a>
+            
+        </div>
+        
+    </div>
+</nav>
+
+    </div>
+</header>
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+
+        <article class="post-full  tag-research tag-dl tag-paper-notes tag-tts post ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime=" 7 November 2021"> 7 November 2021</time>
+                    
+                        <span class="date-divider">/</span>
+                        
+                            
+                               <a href='/thecuriousperspective/tag/research/'>RESEARCH</a>,
+                            
+                        
+                            
+                               <a href='/thecuriousperspective/tag/dl/'>DL</a>,
+                            
+                        
+                            
+                               <a href='/thecuriousperspective/tag/paper-notes/'>PAPER-NOTES</a>,
+                            
+                        
+                            
+                               <a href='/thecuriousperspective/tag/tts/'>TTS</a>
+                            
+                        
+                    
+                </section>
+                <h1 class="post-full-title">Mixer-TTS</h1>
+            </header>
+
+            
+            <figure class="post-full-image" style="background-image: url(/thecuriousperspective/assets/images/2021-11-07-mixer-tts/text-to-speech.jpg)">
+            </figure>
+            
+
+            <section class="post-full-content">
+                <div class="kg-card-markdown">
+                    <h1 id="mixer-tts-non-autoregressive-fast-and-compact-text-to-speech-model-conditioned-on-language-model-embeddings"><code class="language-plaintext highlighter-rouge">Mixer-TTS: non-autoregressive, fast and compact text-to-speech model conditioned on language model embeddings</code></h1>
+<h3 id="by-oktai-tatanov-stanislav-beliaev-boris-ginsburg-nvidia-santa-clara">by <a href="https://ru.linkedin.com/in/oktai15">Oktai Tatanov</a>, <a href="https://www.linkedin.com/in/stasbel">Stanislav Beliaev</a>, <a href="https://www.linkedin.com/in/boris-ginsburg-2249545">Boris Ginsburg</a> (NVIDIA, Santa Clara).</h3>
+
+<p>Available on <a href="https://arxiv.org/abs/2110.03584">arXiv</a> - Oct 2021. Code not available yet. 
+This journal was last updated on 11/8/2021.</p>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>This paper describes <code class="language-plaintext highlighter-rouge">Mixer-TTS</code>, a <span style="background-color: #FFFF00"><a href="#tbd">non-autoregressive</a></span> model for <span style="background-color: #FFFF00"><a href="#tbd">mel-spectrogram</a></span> generation. The idea here is that <code class="language-plaintext highlighter-rouge">Mixer-TTS</code> achieves similar quality (<span style="background-color: #FFFF00">measured as <a href="#tbd">Mean Opinion Score (MOS)</a></span>) as state of the art TTS models today, like <a href="https://arxiv.org/abs/2006.06873">FastPitch</a>, using almost half the parameters, and therefore better inference performance. Basic <code class="language-plaintext highlighter-rouge">Mixer-TTS</code> contains <code class="language-plaintext highlighter-rouge">pitch</code> and <code class="language-plaintext highlighter-rouge">duration</code> predictors as well.</p>
+
+<h2 id="notes">Notes</h2>
+
+<h3 id="intuition-behind-mixer-tts">Intuition behind Mixer-TTS:</h3>
+<ol>
+  <li>Latest improvements in training and inference speed has been mostly related to switching from sequential, autoregressive models (like <a href="https://arxiv.org/abs/1703.10135">Tacotron</a> - 2017, <a href="https://arxiv.org/abs/1712.05884">Wavenet</a> - 2017 and <a href="https://arxiv.org/abs/1710.07654">Deep Voice 3</a> - 2017) to parallel, non-autoregressive models (like <a href="https://arxiv.org/abs/1905.09263">FastSpeech</a> - 2019, <a href="https://arxiv.org/abs/2006.04558">FastSpeech 2</a> - 2020, <a href="https://arxiv.org/abs/2006.06873">FastPitch</a> - 2020 and <a href="https://arxiv.org/pdf/2005.05514.pdf">Talknet</a> - 2020).
+    <ul>
+      <li>Non-autoregressive models generate speech two order of magnitude faster than auto-regressive models with similar quality.</li>
+      <li><span style="background-color: #FFFF00">unknown meaning of autoregressive vs non-autoregressive</span></li>
+      <li>Example, FastPitch generates mel-spectrograms 60x faster than Tacotron 2.</li>
+    </ul>
+  </li>
+  <li>The robustness of TTS models has been improved by using an explicit duration predictor (like in <a href="https://arxiv.org/abs/1702.07825">Deep Voice</a> - 2017, <a href="https://arxiv.org/abs/1705.08947"><code class="language-plaintext highlighter-rouge">Deep Voice 2</code></a> - 2017, <a href="https://arxiv.org/abs/1905.09263">FastSpeech</a> - 2019, <a href="https://arxiv.org/abs/2006.04558">FastSpeech 2</a> - 2020, <a href="https://arxiv.org/abs/2006.06873">FastPitch</a> - 2020 and <a href="https://arxiv.org/pdf/2005.05514.pdf">Talknet</a> - 2020)
+    <ul>
+      <li>Traditionally, models with duration predictors have been trained in a supervised manner with external ground truth alignments.</li>
+      <li>For example, TalkNet used the alignment from auxiliary ASR models, while FastSpeech and FastPitch used alignments from a teacher TTS model.</li>
+      <li><a href="https://arxiv.org/abs/2005.11129">Glow-TTS</a> - 2020 proposed a flow based algorithm for unsupervised alignment training, further improved in <a href="https://openreview.net/pdf?id=0NQwnnwAORi">RAD-TTS</a> - 2021 and modified for non-autoregressive models <a href="https://arxiv.org/abs/2108.10447">here - <code class="language-plaintext highlighter-rouge">One TTS Alignment To Rule Them All</code></a> - 2021 - and that is used in Mixer-TTS model.</li>
+    </ul>
+  </li>
+  <li>The quality of non-autoregressive models improved with:
+    <ul>
+      <li><a href="https://arxiv.org/abs/2006.06873">FastPitch</a> - 2020 adding a pitch predictor for <span style="background-color: #FFFF00"><a href="#tbd">fundamental frequency (F0)</a></span>.</li>
+      <li>Further improvement suggested by <a href="https://www.isca-speech.org/archive/interspeech_2019/hayashi19_interspeech.html"><code class="language-plaintext highlighter-rouge">Hayashi et al</code></a> - 2019 was to augment TTS model with input representation from pre-trained <a href="https://arxiv.org/abs/1810.04805">BERT</a> - 2018 language model.
+        <ul>
+          <li>Intuition here is that text embeddings contain information about the importance of each word, which helped to improve speech prosody and pronunciation.</li>
+        </ul>
+      </li>
+      <li>The usage of semantic context for TTS was extended in <a href="https://arxiv.org/abs/2011.05161"><code class="language-plaintext highlighter-rouge">Xu et al</code></a> - 2021</li>
+    </ul>
+  </li>
+  <li>The model backbone is based on <a href="https://arxiv.org/abs/2105.01601"><code class="language-plaintext highlighter-rouge">MLP-Mixer</code></a> - 2021 architecture from computer vision adapted for speech.
+    <ul>
+      <li>MLP-Mixer makes the model significantly smaller and faster than Transformer-based TTS models (like <a href="https://arxiv.org/abs/2006.04558">FastSpeech 2</a> - 2020, <a href="https://arxiv.org/abs/2006.06873">FastPitch</a> - 2020) <span style="background-color: #FFFF00">not sure why, yet</span></li>
+    </ul>
+  </li>
+  <li>Using token embeddings is significantly less expensive inferring BERT outputs as shown in <a href="https://www.isca-speech.org/archive/interspeech_2019/hayashi19_interspeech.html"><code class="language-plaintext highlighter-rouge">Hayashi et al</code></a> - 2019. <span style="background-color: #FFFF00">Unclear intuition here</span>.
+    <ul>
+      <li>They notably improve speech quality with a very modest increase in the model size and inference speed.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>There are two versions of Mixer-TTS presented in the paper:</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">basic</code> - uses (<span style="background-color: #FFFF00">unclear about the implementation here - perhaps similar to Fastpitch</span>) some embeddings. Achieves a MOS of 4.05. About 19.2 M parameters.</li>
+  <li><code class="language-plaintext highlighter-rouge">extended</code> - uses <code class="language-plaintext highlighter-rouge">token embeddings</code> from pre-trained language model (ALBERT from HuggingFace). Achieves a MOS of 4.11. About 24M parameters.</li>
+</ol>
+
+<p>Samples published here: <a href="https://mixer-tts.github.io/">mixer-tts.github.io</a></p>
+
+<h3 id="architecture">Architecture</h3>
+<p>Here is what the model architecture looks like:</p>
+
+<p><img src="assets/images/2021-11-07-mixer-tts/f1.png" alt="figure:1" /></p>
+
+<p>We encode the text and align it by using audio features in a separate module to get “ground truth” durations. Then we calculate character or <code class="language-plaintext highlighter-rouge">phoneme-level</code> pitch values and feed them all into the length regulator module to expand each character or phoneme feature along with their corresponding durations. Next, the decoder generates mel-spectrogram from the encoded representations.</p>
+
+<p>Mixer-TTS is structurally very similar to FastPitch with two major changes:</p>
+<ol>
+  <li>Replace all feed-forward Transformer-based blocks in the encoder and decoder with new Mixer-TTS blocks.</li>
+  <li>Use an unsupervised speech-to-text alignment framework to train duration predictor. However, duration and pitch predictor architectures are the same as FastPitch.</li>
+  <li>The extended Mixer-TTS additionally includes conditioning on embeddings from pretrained LM.</li>
+</ol>
+
+<p>Loss function - aligner loss and mean-squared errors between ground truth and predicted values for mel-spectrogram, duration and pitch: <br />
+L = L<sub>aligner</sub> + L<sub>mel</sub> + 0.1 * L<sub>durs</sub> + 0.1 * L<sub>pitch</sub></p>
+
+<h4 id="mixer-tts-block">Mixer-TTS block</h4>
+
+<p><img src="assets/images/2021-11-07-mixer-tts/f2.png" alt="figure:2" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">MLP-Mixer</code> performs 2 key actions over input:</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">mixing</code> the per-location features and</li>
+  <li><code class="language-plaintext highlighter-rouge">mixing</code> spatial information</li>
+</ol>
+
+<p>Both operations are performed by stack of two MLPs layers:</p>
+<ol>
+  <li>First MLP layer increases the number of channels by an <code class="language-plaintext highlighter-rouge">expansion factor</code></li>
+  <li>Second MLP layer reduces the number to its original value</li>
+</ol>
+
+<p>But such approach is only possible for when input size for a layer is fixed by every dimension. <span style="background-color: #FFFF00">Why?</span></p>
+
+<p>To use this architecture for TTS (input’s dimensions have dynamic size), we use <code class="language-plaintext highlighter-rouge">time mixing</code>, replacing MLPs with <span style="background-color: #FFFF00"><a href="#tbd">depth-wise 1D convolutions</a></span> and borrowed the original layer for channel “mixing”.</p>
+<ul>
+  <li>During mini-batch training and inference, when sequences in a batch are padded to match the longest sequence, we use sequence masking after MLP and depth-wise 1D convolution layers.</li>
+</ul>
+
+<p>Other model details:</p>
+<ul>
+  <li>The encoder is composed of 6 stacked Mixer-TTS blocks with convolution kernel in time-mix growing linearly from 11 to 21 with step 2. <span style="background-color: #FFFF00">how were these numbers chosen? Or any of these below.</span></li>
+  <li>The decoder is composed of 9 stacked Mixer-TTS blocks with kernel sizes growing from 15 to 31 in the same manner.</li>
+  <li>Feature dimension is constant 384 for all blocks used, channel-mix expansion factor is 4 and there is no expansion factor in time mix.</li>
+  <li>Dropout of 0.15 in each block.</li>
+</ul>
+
+<h4 id="speech-to-text-alignment-framework">Speech-to-text alignment framework</h4>
+
+<p>We train the speech-to-text alignments jointly with the decoder by using adaptation of unsupervised alignment algorithm which was proposed in the <a href="https://github.com/NVIDIA/DeepLearningExamples/tree/master/PyTorch/SpeechSynthesis/FastPitch">implementation of Fastpitch</a>.</p>
+<ul>
+  <li>This aligner encodes text and mel-spectrogram using <span style="background-color: #FFFF00"><a href="#tbd">1-D convolutions</a></span> and projects them to a space with same dimensionality.</li>
+  <li>The “soft” alignment is computed using a <span style="background-color: #FFFF00"><a href="#tbd">pair-wise L<sub>2</sub></a></span> distance of the encoded text and mel representations, then <span style="background-color: #FFFF00"><a href="#tbd">Connectionist Temporal Classification (CTC)</a></span> loss is used to learn these alignments.</li>
+  <li>To obtain <code class="language-plaintext highlighter-rouge">monotonic binarized alignments</code> (i.e. <code class="language-plaintext highlighter-rouge">"ground truth"</code> durations), the <code class="language-plaintext highlighter-rouge">Viterbi Algorithm</code> is used to find the most likely monotonic path.</li>
+</ul>
+
+<h4 id="extended-mixer-tts">Extended Mixer-TTS</h4>
+
+<ul>
+  <li>For the extended model - <a href="https://arxiv.org/abs/1909.11942">ALBERT</a> - 2019 (from <a href="https://arxiv.org/abs/1910.03771">HuggingFace</a> - 2019) pretrained on large corpus of English text is used.</li>
+  <li>We kept the LM tokenization method and utilized the frozen embeddings for input tokens.</li>
+  <li>The lengths of original and tokenized text from external LM are different because they are produced by different tokenizers. To align two sequences, we use a <span style="background-color: #FFFF00"><a href="#tbd">single head self-attention block</a></span> applied to LM embeddings <em>lm<sub>emb</sub></em> and encoder output <em>t<sub>e</sub></em>, which mixed their features while preserving the lengths of <code class="language-plaintext highlighter-rouge">basic</code> text embeddings.</li>
+  <li>Text features for self-attention aligning are extracted with convolutional layers preceded by separate positional embedding layers.</li>
+</ul>
+
+<h2 id="results">Results</h2>
+
+<p>We evaluate the quality of proposed models combined with a HiFi-GAN <span style="background-color: #FFFF00"><a href="#tbd">vocoder</a></span> on LJSpeech.</p>
+
+<p>Dataset used: <a href="https://keithito.com/LJ-Speech-Dataset/"><code class="language-plaintext highlighter-rouge">LJSpeech dataset</code></a> ~ 2.6 GB</p>
+<ul>
+  <li>This is a public domain speech dataset consisting of 13,100 short audio clips of a single speaker reading passages from 7 non-fiction books. A transcription is provided for each clip. Clips vary in length from 1 to 10 seconds and have a total length of approximately 24 hours.</li>
+  <li>MOS of 4.27 <span style="background-color: #FFFF00">source unknown</span></li>
+  <li>This dataset was split into 3 sets:
+    <ol>
+      <li>12, 500 samples for training</li>
+      <li>100 samples for training</li>
+      <li>500 samples for testing
+        <ul>
+          <li>The text was lower-cased and all punctuation was left intact.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>Experimented with two tokenization approaches:</p>
+<ol>
+  <li>character-based</li>
+  <li>phoneme-based
+    <ul>
+      <li>For grapheme-to-phoneme conversion we used <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">ARPABET representation in the CMUdict vocabulary</a> and left ambiguous words and heteronyms in character representation.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="training-details">Training details</h3>
+<ul>
+  <li>We converted ground truth <span style="background-color: #FFFF00"><a href="#tbd">22050Hz sampling rate audios</a></span> to mel-spectrograms using a <span style="background-color: #FFFF00"><a href="#tbd">Short-Time Fourier Transform (STFT)</a></span> with 50ms <span style="background-color: #FFFF00"><a href="#tbd">Hann window</a></span> and 12.5 ms <span style="background-color: #FFFF00"><a href="#tbd">frame hop</a></span>.</li>
+  <li>Ground truth pitch was extracted using the <a href="https://dawenl.github.io/publications/McFee15-librosa.pdf">librosa library</a> with values-aligned along mel-spectrogram frames.</li>
+  <li>The model was trained for 1000 epochs using the  <a href="https://arxiv.org/abs/1904.00962">LAMB optimizer</a> with <em>β<sub>1</sub></em> = 0.9, <em>β<sub>2</sub></em> = 0.98, ε = 10<sup>-8</sup>, a weight decay of 10<sup>-6</sup> and gradient clipping of 1000.0.</li>
+  <li>A <span style="background-color: #FFFF00"><a href="#tbd">Noam annealing learning rate policy</a></span> was used with a learning rate of 0.1 and a 1000 steps warmup.</li>
+  <li>We used a total batch of 128 for 4 GPUs with gradients accumulation of 2. The training takes around 12 hours on 4xV100 GPUs in mixed precision mode.</li>
+</ul>
+
+<h3 id="speech-quality-evaluation">Speech Quality Evaluation</h3>
+
+<p>Conducted two mean opinion score (MOS) studies for gneerating speech quality comparison using Amazon Mechanical Turk.</p>
+<ul>
+  <li>For evaluation - we selected MTurk workers with top performance (&gt;= 95% <span style="background-color: #FFFF00"><a href="#tbd">HITS</a></span> approval, &gt;= 5000 HITS total) - from US only with a minimum high school degree.</li>
+  <li>Tested 50 audio samples per model with 15 people per sample.</li>
+  <li>The scores ranged from 1.0 to 5.0 with a step of 0.5.</li>
+</ul>
+
+<h4 id="mixer-tts-with-different-tokenization-approaches-in-combination-with-lm-embeddings">Mixer-TTS with different tokenization approaches in combination with LM embeddings</h4>
+
+<p><img src="assets/images/2021-11-07-mixer-tts/t1.png" alt="table:1" /></p>
+
+<p>Observations:</p>
+<ul>
+  <li>Phonetic input representation slightly outperforms characters for the basic model.</li>
+  <li>But for the extended model, the combination of character-based tokenization with LM embeddings performs better.</li>
+</ul>
+
+<h3 id="mixer-tts-vs-popular-tts-models">Mixer-TTS vs popular TTS models</h3>
+
+<p>Fastpitch and TalkNet 2 were trained with the same aligner mechanism as used in Mixer-TTS (as opposed to the usual external set of durations) - to match the approach presented in Mixer-TTS</p>
+
+<p><img src="assets/images/2021-11-07-mixer-tts/t2.png" alt="table:2" /></p>
+
+<p>Observations:</p>
+<ul>
+  <li>The basic version of Mixer-TTS with phonemes achieves a comparable MOS to Fastpitch.</li>
+  <li>The extended version (Mixer-TTS-X) exceeds the quality of all the examined models.</li>
+</ul>
+
+<h3 id="inference-performance">Inference Performance</h3>
+
+<p>The measurement was done with a variable-length text generator based on snippets from the LJSpeech test set and a batch size of 1. The paper contains exact environment/library version details. We measured the wall-time of mel-spectrogram generation starting from raw text processing step and averaged results from 10 consecutive runs with a warmup for cuDNN to adjust algorithms to input sizes.</p>
+
+<p><img src="assets/images/2021-11-07-mixer-tts/f3.png" alt="figure:3" /></p>
+
+<p>Observations:</p>
+<ul>
+  <li>Mixer-TTS is notably faster than Fastpitch and it scales better with increasing input length.</li>
+  <li>The best version of our model has only 24 M parameters while FastPitch has 45 M parameters.</li>
+</ul>
+
+<h2 id="discussion">Discussion</h2>
+
+<p><em>And finally, this was the first paper I reviewed in the text-to-speech domain, ended up with more questions than answers. Looking forward to learning more as I go along this journey. Feel free to drop interesting papers in this domain in the comments section!</em></p>
+
+<p>Other tags: Conversational-AI TTS Model-Architecture</p>
+
+                </div>
+            </section>
+
+            <footer class="post-full-footer">
+                <!-- Everything inside the #author tags pulls data from the author -->
+                <!-- #author-->
+                
+                    
+                        <section class="author-card">
+                            
+                                <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="aroraakshit" />
+                            
+                            <section class="author-card-content">
+                                <h4 class="author-card-name"><a href="/thecuriousperspective/author/aroraakshit">Akshit Arora</a></h4>
+                                
+                                    <p>Senior Data Scientist at NVIDIA, Text-to-Speech</p>
+                                
+                            </section>
+                        </section>
+                        <div class="post-full-footer-right">
+                            <a class="author-card-button" href="/thecuriousperspective/author/aroraakshit">Read More</a>
+                        </div>
+                    
+                
+                <!-- /author  -->
+            </footer>
+
+            <!-- If you use Disqus comments, just uncomment this block.
+            The only thing you need to change is "test-apkdzgmqhj" - which
+            should be replaced with your own Disqus site-id. -->
+            
+                <section class="post-full-comments">
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            var this_page_url = 'https://aroraakshit.github.io/mixer-tts';
+                            var this_page_identifier = '/mixer-tts';
+                            var this_page_title = 'Mixer-TTS';
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://ghost-deployed-on-github.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </section>
+            
+
+            <!-- Email subscribe form at the bottom of the page -->
+            
+
+        </article>
+
+    </div>
+</main>
+
+<!-- Links to Previous/Next posts -->
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+                
+                
+                
+                
+                    <article class="read-next-card"
+                        
+                            style="background-image: url(/thecuriousperspective/assets/images/blog-cover.jpg)"
+                        
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; Akshit Arora &mdash;</small>
+                            
+                                <h3 class="read-next-card-header-title"><a href="/thecuriousperspective/tag/research/">Research</a></h3>
+                            
+                        </header>
+                        <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/thecuriousperspective/nv-set-records">NVIDIA Speech and Translation AI Models Set Records for Speed and Accuracy</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                    
+                                        
+                                        
+                                            <li><a href="/thecuriousperspective/radmmm">RADMMM: Multilingual Multiaccented Multispeaker TTS with RADTTS</a></li>
+                                        
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                                  
+                                    
+                                  
+                                
+                                  
+                                
+                                  
+                                
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="/thecuriousperspective/tag/research/">
+                                
+                                    See all 2 posts  →
+                                
+                            </a>
+                        </footer>
+                    </article>
+                
+            
+
+            <!-- If there's a next post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/thecuriousperspective/pytorch-traced-models">
+                <div class="post-card-image" style="background-image: url(/thecuriousperspective/assets/images/2023-03-23-pytorch-traced-models/pytorch_traced_model.png)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/thecuriousperspective/pytorch-traced-models">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Eng</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Dl</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">PyTorch traced models</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>PyTorch traced models
+- Here are some of my notes / excerpts from PyTorch documentation that I found while researching PyTorch traced models.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                        
+                        <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="Akshit Arora" />
+                        
+                        <span class="post-card-author">
+                            <a href="/thecuriousperspective/author/aroraakshit/">Akshit Arora</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      12 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+            <!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs -->
+            
+                
+
+    <article class="post-card post-template">
+        
+            <a class="post-card-image-link" href="/thecuriousperspective/jfrog-artifactory">
+                <div class="post-card-image" style="background-image: url(/thecuriousperspective/assets/images/2020-12-17-p1.jpeg)"></div>
+            </a>
+        
+        <div class="post-card-content">
+            <a class="post-card-content-link" href="/thecuriousperspective/jfrog-artifactory">
+                <header class="post-card-header">
+                    
+                        
+                            
+                               <span class="post-card-tags">Eng</span>
+                            
+                        
+                            
+                                <span class="post-card-tags">Dl</span>
+                            
+                        
+                    
+
+                    <h2 class="post-card-title">How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory</h2>
+                </header>
+                <section class="post-card-excerpt">
+                    
+                        <p>How to Guide: Using NVIDIA RAPIDS on JFrog Artifactory
+Covers setup of remote repositories on Artifactory 7.x and RAPIDS conda installation.
+
+</p>
+                    
+                </section>
+            </a>
+            <footer class="post-card-meta">
+                
+                    
+                        
+                        <img class="author-profile-image" src="/thecuriousperspective/assets/images/akshit.JPG" alt="Akshit Arora" />
+                        
+                        <span class="post-card-author">
+                            <a href="/thecuriousperspective/author/aroraakshit/">Akshit Arora</a>
+                        </span>
+                    
+                
+                <span class="reading-time">
+                    
+                    
+                      1 min read
+                    
+                </span>
+            </footer>
+        </div>
+    </article>
+
+            
+
+        </div>
+    </div>
+</aside>
+
+<!-- Floating header which appears on-scroll, included from includes/floating-header.hbs -->
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="https://aroraakshit.github.io/thecuriousperspective/">
+            
+                <img src="/thecuriousperspective/assets/images/favicon.png" alt="Akshit Arora icon" />
+            
+            <span>Akshit Arora</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Mixer-TTS</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Mixer-TTS&amp;url=https://aroraakshit.github.io/thecuriousperspective/mixer-tts"
+            onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://aroraakshit.github.io/thecuriousperspective/mixer-tts"
+            onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+
+        </a>
+    </div>
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+
+
+        <!-- Previous/next page links - displayed on every page -->
+        
+
+        <center>
+            <iframe src="https://aroraakshit.substack.com/embed" width="480" height="320" style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+        </center>
+        <br> <br>
+
+        <!-- The footer at the very bottom of the screen -->
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://aroraakshit.github.io/thecuriousperspective/">Akshit Arora</a> &copy; 2026</section>
+                <section class="poweredby">Published with <a href="https://jekyllrb.com/">Jekyll</a> &
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> using
+                    <a href="https://github.com/jekyllt/jasper2" target="_blank" rel="noopener">Jasper2</a></section>
+                <nav class="site-footer-nav">
+                    <a href="/thecuriousperspective/">Home</a>
+                    
+                    
+                    
+                    
+                </nav>
+            </div>
+            <div class="site-footer-content inner">
+                <section></section>
+                <section class="poweredby" style="color:#757575; font-size: 10px;">Views expressed here are my own.</section>
+                <section></section>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- The big email subscribe modal content -->
+    
+
+    <!-- highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/components/prism-abap.min.js"></script>
+    <script>$(document).ready(function() {
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });</script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id=”MathJax-script” async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+    <!-- jQuery + Fitvids, which makes all video embeds responsive -->
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/thecuriousperspective/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="https://demo.ghost.io/assets/js/jquery.fitvids.js?v=724281a32e"></script>
+
+
+    <!-- Paginator increased to "infinit" in _config.yml -->
+    <!-- if paginator.posts  -->
+    <!-- <script>
+        var maxPages = parseInt('');
+    </script>
+    <script src="/thecuriousperspective/assets/js/infinitescroll.js"></script> -->
+    <!-- /endif -->
+
+    
+
+
+    <!-- Add Google Analytics  -->
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PVHRB5H5R2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PVHRB5H5R2');
+</script>
+
+    <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+
+    
+
+    <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
+    <!-- ghost_foot -->
+
+</body>
+</html>
